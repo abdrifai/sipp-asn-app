@@ -4,16 +4,16 @@ import fetch from "node-fetch";
 const URL: string = process.env.URL_SSO as string;
 
 export async function GET() {
-  const client_id = "tajounaunaws";
-  const grant_type = "password";
-  const username = "198701022011011006";
-  const password = "02Januari87";
+  const client_id = "";
+  const grant_type = "";
+  const username = "";
+  const password = "";
 
   const param = new URLSearchParams({
-    client_id: "tajounaunaws",
-    grant_type: "password",
-    username: "198701022011011006",
-    password: "02Januari87",
+    client_id: "",
+    grant_type: "",
+    username: "",
+    password: "",
   });
 
   let headersSSO = {

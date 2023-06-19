@@ -4,8 +4,8 @@ import fetch from "node-fetch";
 
 export async function GET() {
   const URL: string = process.env.URL_APIM as string;
-  const usernameAPIM = "JKbRdABqstrShsqyz7dWKQKRM78a";
-  const passwordAPIM = "7ikOpop63gZtaJ7qYuMXk9wRpdoa";
+  const usernameAPIM = "";
+  const passwordAPIM = "";
   let auth =
     "Basic " +
     Buffer.from(usernameAPIM + ":" + passwordAPIM).toString("base64");
