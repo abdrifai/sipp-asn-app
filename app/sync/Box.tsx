@@ -12,6 +12,7 @@ import {
 } from "../actions/getPegawaiOfBKN";
 import { AiOutlineMinus } from "react-icons/ai";
 import useCurrentPNS from "../hooks/useCurrentPNS";
+import Link from "next/link";
 
 function formatDateBKN(dateStr: string) {
   if (dateStr) {
@@ -157,6 +158,12 @@ const Box: React.FC<BoxProps> = ({ title, body }) => {
           >
             Cari PNS
           </button>
+          <Link
+            href={"/sync"}
+            className="bg-slate-200 px-3 py-2 shadow-md rounded-lg hover:font-semibold hover:bg-rose-500 hover:text-white transition"
+          >
+            Back to Menu
+          </Link>
         </div>
       </div>
       <div className="pt-4">

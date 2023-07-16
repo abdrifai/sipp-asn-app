@@ -4,8 +4,9 @@ import fetch from "node-fetch";
 
 export async function GET() {
   const URL: string = process.env.URL_APIM as string;
-  const usernameAPIM = "";
-  const passwordAPIM = "";
+  const usernameAPIM = process.env.USERNAME_APIM;
+  const passwordAPIM = process.env.PASSWORD_APIM;
+
   let auth =
     "Basic " +
     Buffer.from(usernameAPIM + ":" + passwordAPIM).toString("base64");
@@ -15,17 +16,38 @@ export async function GET() {
     Authorization: auth,
   };
 
-  const res = await fetch(URL, {
+  const response = await fetch(URL, {
     method: "POST",
     headers: headersAPIM,
     body: "grant_type=client_credentials",
   });
 
-  if (res.ok) {
-    const data = await res.json();
-    return NextResponse.json(data);
+  if (response.ok) {
+    const data: any = await response.json();
+
+    const expirationDate = new Date();
+    expirationDate.setDate(expirationDate.getDate() + 1); // Misalnya, bertahan selama 7 hari
+    const cookieOptions = {
+      expires: expirationDate,
+      httpOnly: true,
+      sameSite: "lax",
+    };
+
+    const res = NextResponse.json(data, {
+      headers: {
+        "Set-Cookie": `token_apim=${data.access_token}; ${cookieOptions}`,
+      },
+    });
+
+    // const res = NextResponse.json(data, {
+    //   headers: {
+    //     "Set-Cookie": `token_apim=${data.access_token}; HttpOnly; Secure`,
+    //   },
+    // });
+
+    return res;
   } else {
-    throw new Error("Failed to fetch data. Status: " + res.status);
+    throw new Error("Failed to fetch data. Status: " + response.status);
   }
   // const data = await res.json();
   // return NextResponse.json(data);

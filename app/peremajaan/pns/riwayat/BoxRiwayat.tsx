@@ -13,7 +13,7 @@ const BoxRiwayat: React.FC<BoxProps> = ({ title, children }) => {
   const modalCompare = useModalCompare();
 
   return (
-    <div className="border-2 p-2 rounded-lg">
+    <div className="border-2 p-2 rounded-lg mt-3">
       <div className="flex flex-row justify-between items-center border-b-2 pb-2">
         <div className="font-bold pl-3">{title}</div>
         <div className="flex gap-3">
@@ -21,7 +21,7 @@ const BoxRiwayat: React.FC<BoxProps> = ({ title, children }) => {
             className="bg-slate-200 px-3 py-2 shadow-md rounded-lg hover:font-semibold hover:bg-rose-500 hover:text-white transition"
             onClick={modalCompare.onOpen}
           >
-            Compare Of SIASN
+            Compare Of BKN
           </button>
           <button
             className="bg-slate-200 px-3 py-2 shadow-md rounded-lg hover:font-semibold hover:bg-green-500 hover:text-white transition"
@@ -31,7 +31,7 @@ const BoxRiwayat: React.FC<BoxProps> = ({ title, children }) => {
           </button>
         </div>
       </div>
-      <div className="pt-2">{children}</div>
+      <div className="h-80 overflow-auto">{children}</div>
     </div>
   );
 };

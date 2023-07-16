@@ -47,7 +47,7 @@ const RiwayatAngkaKredit = () => {
 
   return (
     <BoxRiwayat title="Riwayat Angka Kredit">
-      <div className="pt-3 overflow-scroll">
+      <div className="pt-3">
         <table className="table-auto min-w-full">
           <thead className="border-b font-medium dark:border-neutral-500">
             <tr onClick={handleOnClick}>

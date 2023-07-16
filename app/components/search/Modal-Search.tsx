@@ -43,7 +43,7 @@ const ModalSearch: React.FC<PnsSearch> = () => {
       } absolute top-0 right-0 overflow-auto bg-gray-600 bg-opacity-30 shadow-md z-10 w-full h-full `}
     >
       <div className="flex min-h-[calc(100vh-20vh)] items-center justify-center">
-        <div className="bg-white p-4 min-w-[40vw] relative">
+        <div className="bg-white p-4 min-w-[40vw] relative rounded-l-lg rounded-br-lg">
           <div className="bg-white rounded-r-lg absolute top-0 right-0 translate-x-full translate-y-100">
             <AiOutlineClose
               className="w-8 h-8 cursor-pointer hover:text-white hover:bg-gray-800 hover:rounded-r-lg"
@@ -51,15 +51,15 @@ const ModalSearch: React.FC<PnsSearch> = () => {
             />
           </div>
           <InputSearch onSearch={handleSearchQ} />
-          <div className="pt-5 transition min-h-[350px]">
-            <table className="w-full border-b-2 border-gray-200">
-              <thead className=" bg-slate-100 border-b-2 border-gray-300 text-left">
+          <div className="pt-5 transition min-h-full h-80">
+            <table className="w-full border-gray-200">
+              <thead className=" bg-slate-100 border-gray-300 text-left">
                 <tr>
-                  <th className="py-3 pl-2 text-sm font-semibold tracking-wide">
+                  <th className="py-3 pl-2 text-sm font-bold tracking-wide text-slate-600 text-center">
                     NIP
                   </th>
-                  <th className="py-3 text-sm font-semibold tracking-wide text-left">
-                    Nama
+                  <th className="py-3 text-sm font-bold tracking-wide text-slate-600 text-left">
+                    NAMA
                   </th>
                 </tr>
               </thead>

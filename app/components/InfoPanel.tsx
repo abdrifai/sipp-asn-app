@@ -36,7 +36,9 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const InfoPanel = () => {
   const currentPNS = useCurrentPNS();
-  const { data, error } = useSWR(`/api/pns/${currentPNS.NIP}`, fetcher);
+  const { data, error } = useSWR(`/api/pns/${currentPNS.NIP}`, fetcher, {
+    revalidateIfStale: false,
+  });
   // const [data, setData] = useState<PNS[]>([]);
 
   const cariModal = useCariASNModal();
@@ -68,7 +70,7 @@ const InfoPanel = () => {
   };
 
   if (error) {
-    return <div>Error fetching data</div>;
+    return <div>Fetching data error</div>;
   }
 
   if (!data) {
@@ -88,23 +90,23 @@ const InfoPanel = () => {
       </div>
       <div className="flex col-span-5">
         <div className="space-y-0">
-          <p className="block font-bold">{data && data[0]?.nipBaru}</p>
-          <p className="block">{data && data[0]?.orang?.nama}</p>
+          <p className="block font-bold">{data && data?.data[0]?.nipBaru}</p>
+          <p className="block">{data && data?.data[0]?.orang?.nama}</p>
           <p className="block">
-            {data && data[0]?.lastGolongan?.golongan?.gol},{" "}
-            {data && data[0]?.lastGolongan?.golongan?.pangkat}
+            {data && data?.data[0]?.lastGolongan?.golongan?.gol},{" "}
+            {data && data?.data[0]?.lastGolongan?.golongan?.pangkat}
           </p>
           <p className="block">
-            {data && data[0]?.lastJabatan?.jabatan?.nmJab}
+            {data && data?.data[0]?.lastJabatan?.jabatan?.nmJab}
           </p>
         </div>
       </div>
       <div className="ml-4 text-left col-span-5">
         <span className="block">
-          {data && data[0]?.lastJabatan?.unorInduk?.nmUnor}
+          {data && data?.data[0]?.lastJabatan?.unorInduk?.nmUnor}
         </span>
         <span className="block">
-          {data && data[0]?.lastJabatan?.subUnorSub?.nmUnor}
+          {data && data?.data[0]?.lastJabatan?.subUnorSub?.nmUnor}
         </span>
       </div>
       <div className="col-span-1 group">

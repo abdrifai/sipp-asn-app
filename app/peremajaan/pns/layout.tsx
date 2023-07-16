@@ -10,11 +10,9 @@ export default async function RootLayout({
 }) {
   return (
     <div className="container pt-4">
-      Layout peremajaan/pns
+      Peremajaan/PNS
       <InfoPanel />
-      {/* <CariASN /> */}
-      {/* <ModalSearch /> */}
-      {/* <ModalCompare /> */}
+      <ModalCompare />
       <div>{children}</div>
     </div>
   );

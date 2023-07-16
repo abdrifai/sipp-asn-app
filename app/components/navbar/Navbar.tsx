@@ -14,7 +14,7 @@ export default function Navbar() {
         <div className="container">
           <div className="flex justify-between item-center py-4">
             <div className="font-bold tracking-tighter text-slate-600">
-              <Link href="/">SIP-ASN</Link>
+              <Link href={"/"}>SIP-ASN</Link>
             </div>
             <div className="font-bold tracking-tighter text-slate-300">
               <span className="text-lg">
@@ -24,7 +24,6 @@ export default function Navbar() {
             </div>
             <div className="flex items-center px-3 relative">
               <button
-                // onClick={() => setOpenUser(!openUser)}
                 className={`${
                   openUser ? "text-red-700" : "text-slate-600"
                 } font-semibold  hover:text-indigo-600 px-3`}
