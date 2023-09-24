@@ -1,11 +1,13 @@
 import CardBox from "@/app/components/cards/CardBox";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 interface DetailProps {
   handleToggle: () => void;
-  RwtID?: string;
+  onDataReceived?: (data: RwtGolDetail) => void;
+  rwtID?: string;
+  sendData?: any;
 }
 
 interface RwtGolDetail {
@@ -18,8 +20,9 @@ interface RwtGolDetail {
   sk: string;
   tglSk: string;
   tmtSk: string;
-  gapok: string;
+  gapok: number;
   golongan: {
+    id: string;
     gol: string;
     pangkat: string;
   };
@@ -29,35 +32,41 @@ interface RwtGolDetail {
   };
 }
 
-const DetailGolongan: React.FC<DetailProps> = ({ handleToggle, RwtID }) => {
-  const [data, setData] = useState<RwtGolDetail[]>([]);
+const defaultFormData = {
+  id: "",
+  maskerBln: "",
+  maskerThn: "",
+  pengesahan: "",
+  pertekBkn: "",
+  tglPertek: "",
+  sk: "",
+  tglSk: "",
+  tmtSk: "",
+  gapok: 0,
+  golongan: {
+    id: "",
+    gol: "",
+    pangkat: "",
+  },
+  jenisKP: {
+    id: "",
+    jnskp: "",
+  },
+};
+
+const DetailGolongan: React.FC<DetailProps> = ({
+  handleToggle,
+  onDataReceived,
+  sendData,
+  rwtID,
+}) => {
   const [refJenisKP, setRefJenisKP] = useState([]);
-  const [selectedJenisKP, setSelectedJenisKP] = useState("");
-  const [tglSK, setTglSK] = useState(new Date());
-  const [tmtSK, setTmtSK] = useState(new Date());
-  const [tglPertek, setTglPertek] = useState(new Date());
-
-  const getRwtID = async (idRwt: any) => {
-    try {
-      const res = await fetch(`/api/pns/riwayat/detail/golongan/${idRwt}`);
-
-      if (res.ok) {
-        const data = await res.json();
-        setData(data.data);
-        setSelectedJenisKP(data.data[0].jenisKP.id);
-        // console.log(data.data[0]);
-        setTglSK(new Date(data.data[0].tglSk));
-        setTmtSK(new Date(data.data[0].tmtSk));
-        setTglPertek(new Date(data.data[0].tglPertek));
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const [refGolongan, setRefGolongan] = useState([]);
+  const [formData, setFormData] = useState<RwtGolDetail>(defaultFormData);
 
   const getRefJenisKP = async () => {
     try {
-      const res = await fetch(`/api/referensi/jenis-kp`);
+      const res = await fetch(`/api/referensi/jeniskp`);
 
       if (res.ok) {
         const data = await res.json();
@@ -69,30 +78,87 @@ const DetailGolongan: React.FC<DetailProps> = ({ handleToggle, RwtID }) => {
     }
   };
 
+  const getRefGolongan = async () => {
+    try {
+      const res = await fetch(`/api/referensi/golongan`);
+
+      if (res.ok) {
+        const data = await res.json();
+        setRefGolongan(data.data);
+        // console.log(data.data);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     getRefJenisKP();
-    getRwtID(RwtID);
-    // console.log(data);
-  }, []);
+    getRefGolongan();
+    setFormData(sendData);
+    // console.log(sendData);
+  }, [sendData]);
 
-  const handleChange = (event: any) => {
-    setSelectedJenisKP(event.target.value);
+  const handleChange = (
+    e: ChangeEvent<HTMLSelectElement | HTMLInputElement>
+  ) => {
+    const { name, value } = e.target;
+
+    setFormData((prevData) => {
+      if (name.includes(".")) {
+        const [nestedProp, nestedField] = name.split(".");
+        if (prevData["golongan"]) {
+          return {
+            ...prevData,
+            [nestedProp]: {
+              ...prevData["golongan"],
+              [nestedField]: value,
+            },
+          };
+        } else {
+          return {
+            ...prevData,
+            [nestedProp]: {
+              ...prevData["jenisKP"],
+              [nestedField]: value,
+            },
+          };
+        }
+      } else {
+        return {
+          ...prevData,
+          [name]: value,
+        };
+      }
+    });
+  };
+
+  const onSave = () => {
+    console.log("save ok");
+    if (onDataReceived) {
+      onDataReceived(formData);
+    }
   };
 
   return (
-    <CardBox title="Rincian Golongan" onClose={handleToggle} footer={true}>
+    <CardBox
+      title="Rincian Golongan"
+      onClose={handleToggle}
+      footer={true}
+      onSave={onSave}
+    >
       <div className="grid grid-cols-12 gap-4">
         <div className="col-span-12">
           <label
-            htmlFor="jnsKP"
+            htmlFor="jenisKP.id"
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
           >
             Jenis KP
           </label>
           <select
-            value={selectedJenisKP}
+            value={formData?.jenisKP.id}
             onChange={handleChange}
-            id="jnsKP"
+            name="jenisKP.id"
             className="w-1/3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           >
             <option value="">Pilih jenis KP</option>
@@ -106,57 +172,68 @@ const DetailGolongan: React.FC<DetailProps> = ({ handleToggle, RwtID }) => {
         </div>
         <div className="col-span-4">
           <label
-            htmlFor="jnsKP"
+            htmlFor="golongan.id"
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
           >
             Golongan Ruang
           </label>
-          <input
-            value={data[0]?.golongan.gol}
-            type="text"
-            id="jnsKP"
-            className="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          />
+          <select
+            value={formData?.golongan.id}
+            onChange={handleChange}
+            name="golongan.id"
+            className="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          >
+            <option value="">Pilih Golongan Ruang</option>
+            {refGolongan &&
+              refGolongan?.map((item: any) => (
+                <option key={item.id} value={item.id}>
+                  {item.gol} , {item.pangkat}
+                </option>
+              ))}
+          </select>
         </div>
         <div className="col-span-2">
           <label
-            htmlFor="jnsKP"
+            htmlFor="maskerThn"
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
           >
             Masa Kerja Tahun
           </label>
           <input
-            value={data[0]?.maskerThn}
+            value={formData?.maskerThn}
+            onChange={handleChange}
             type="text"
-            id="jnsKP"
+            name="maskerThn"
             className="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           />
         </div>
         <div className="col-span-6">
           <label
-            htmlFor="jnsKP"
+            htmlFor="maskerBln"
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
           >
             Masa Kerja Bulan
           </label>
           <input
-            value={data[0]?.maskerBln}
+            value={formData?.maskerBln}
+            onChange={handleChange}
             type="text"
-            id="jnsKP"
+            name="maskerBln"
             className="w-1/3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           />
         </div>
         <div className="col-span-4">
           <label
-            htmlFor="jnsKP"
+            htmlFor="sk"
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
           >
             Nomor SK
           </label>
           <input
-            value={data[0]?.sk}
+            value={formData?.sk}
+            onChange={handleChange}
             type="text"
-            id="jnsKP"
+            name="sk"
             className="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           />
         </div>
@@ -168,17 +245,17 @@ const DetailGolongan: React.FC<DetailProps> = ({ handleToggle, RwtID }) => {
             Tanggal SK
           </label>
           <DatePicker
-            selected={tglSK}
-            onChange={(date) => setTglSK(date || new Date("00-00-0000"))}
+            name="tglSk"
+            selected={formData?.tglSk ? new Date(formData?.tglSk) : null}
+            onChange={(date) =>
+              setFormData((prevData) => ({
+                ...prevData,
+                tglSk: date ? date.toISOString() : "",
+              }))
+            }
             dateFormat={"dd/MM/yyy"}
             className="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           />
-          {/* <input
-            value={new Date(data[0]?.tglSk).toLocaleDateString("id")}
-            type="text"
-            id="jnsKP"
-            className="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          /> */}
         </div>
         <div className="col-span-6">
           <label
@@ -188,29 +265,30 @@ const DetailGolongan: React.FC<DetailProps> = ({ handleToggle, RwtID }) => {
             TMT SK
           </label>
           <DatePicker
-            selected={tmtSK}
-            onChange={(date) => setTmtSK(date || new Date("00-00-0000"))}
+            name="tmtSk"
+            selected={formData?.tmtSk ? new Date(formData?.tmtSk) : null}
+            onChange={(date) =>
+              setFormData((prevData) => ({
+                ...prevData,
+                tmtSk: date ? date.toISOString() : "",
+              }))
+            }
             dateFormat={"dd/MM/yyyy"}
             className="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           />
-          {/* <input
-            value={new Date(data[0]?.tmtSk).toLocaleDateString("id")}
-            type="text"
-            id="jnsKP"
-            className="w-1/3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          /> */}
         </div>
         <div className="col-span-4">
           <label
-            htmlFor="nopertek"
+            htmlFor="pertekBkn"
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
           >
             Nomor Pertek BKN
           </label>
           <input
-            value={data[0]?.pertekBkn}
+            value={formData?.pertekBkn}
+            onChange={handleChange}
             type="text"
-            id="nopertek"
+            name="pertekBkn"
             className="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           />
         </div>
@@ -222,44 +300,48 @@ const DetailGolongan: React.FC<DetailProps> = ({ handleToggle, RwtID }) => {
             Tanggal Pertek BKN
           </label>
           <DatePicker
-            selected={tglPertek}
-            onChange={(date) => setTglPertek(date || new Date("00-00-0000"))}
+            name="tglPertek"
+            selected={
+              formData?.tglPertek ? new Date(formData?.tglPertek) : null
+            }
+            onChange={(date) =>
+              setFormData((prevData) => ({
+                ...prevData,
+                tglPertek: date ? date.toISOString() : "",
+              }))
+            }
             dateFormat={"dd/MM/yyyy"}
             className="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           />
-          {/* <input
-            value={new Date(data[0]?.tglPertek).toLocaleDateString("id")}
-            type="text"
-            id="tglpertek"
-            className="w-1/4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          /> */}
         </div>
         <div className="col-span-4">
           <label
-            htmlFor="jnsKP"
+            htmlFor="gapok"
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
           >
             Gaji Pokok
           </label>
           <input
-            value={(data[0]?.gapok || 0).toLocaleString()}
+            value={(formData?.gapok || 0).toLocaleString()}
+            onChange={handleChange}
             type="text"
-            id="jnsKP"
+            name="gapok"
             className="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           />
         </div>
         <div className="col-span-8">
           <label
-            htmlFor="jnsKP"
+            htmlFor="pengesahan"
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
           >
             Pejabat Yang Menetapkan
           </label>
           <input
-            value={data[0]?.pengesahan}
+            value={formData?.pengesahan}
+            onChange={handleChange}
             type="text"
-            id="jnsKP"
-            className="w-1/4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            name="pengesahan"
+            className="w-1/2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           />
         </div>
       </div>

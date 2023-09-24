@@ -79,37 +79,6 @@ export default function page() {
     setTokenSSO(e.target.value);
   };
 
-  const handleGetPegawai = async () => {
-    if (data) {
-      const result = await getPegawaiOfBKN(
-        data.nip,
-        data.auth,
-        data.authorization
-      );
-      console.log(result.data);
-    } else {
-      console.log("get Pegawai SIASN kosong");
-    }
-  };
-
-  const handleGetPegawaiRiwayat = async () => {
-    const result = await getPegawaiOfBKNRiwayatJabatan(
-      data.nip,
-      data.auth,
-      data.authorization
-    );
-    console.log(result);
-  };
-
-  const handleGetPegawaiRiwayatGol = async () => {
-    const result = await getPegawaiOfBKNRiwayatGolongan(
-      data.nip,
-      data.auth,
-      data.authorization
-    );
-    console.log(result);
-  };
-
   return (
     <div>
       <h3>Page Setting</h3>
@@ -125,9 +94,6 @@ export default function page() {
             }}
           />
         </div>
-        {/* <Button label="Get Pegawai" onClick={handleGetPegawai} />
-        <Button label="Get Rwt Jabatan" onClick={handleGetPegawaiRiwayat} />
-        <Button label="Get Rwt Golongan" onClick={handleGetPegawaiRiwayatGol} /> */}
       </div>
       <div>
         <div className="p-5 border-2 mt-4">

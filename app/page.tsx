@@ -1,4 +1,5 @@
 import CardCount from "./components/cards/CardCount";
+import Uploadfile from "./components/uploadfile";
 
 type PnsCountType = {
   data: {
@@ -8,7 +9,7 @@ type PnsCountType = {
 
 const getCountPNS = async () => {
   const result = await fetch(
-    `${process.env.URL_API}/api/laporan/statitik/pns-aktif`
+    `${process.env.URL_BACKEND}/api/laporan/statitik/pns-aktif`
   );
   return result.json();
 };
@@ -25,6 +26,9 @@ export default async function Home() {
         description="PNS Aktif Kab. Tojo Una-Una"
         bg_gradient="bg-gradient-to-r from-slate-300 via-slate-50 to-slate-300"
       />
+      <div className="mt-10">
+        <Uploadfile />
+      </div>
     </div>
   );
 }

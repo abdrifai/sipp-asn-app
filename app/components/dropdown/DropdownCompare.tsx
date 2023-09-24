@@ -1,44 +1,45 @@
 "use client";
-import Link from "next/link";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import React, { useEffect, useRef, useState } from "react";
-import { AiOutlineEdit, AiOutlineDelete } from "react-icons/ai";
+import { MdOutlinePreview, MdAutorenew } from "react-icons/md";
 
-interface DropdownProps {
+interface DropdownCompareProps {
   title: string;
   link?: string;
-  onClickEdit?: () => void;
-  onClickHapus?: () => void;
+  onClickView?: () => void;
+  onClickAuto?: () => void;
 }
 
-const DropdownMenuAction: React.FC<DropdownProps> = ({
+const DropdownCompare: React.FC<DropdownCompareProps> = ({
   title,
   link,
-  onClickEdit,
-  onClickHapus,
+  onClickView,
+  onClickAuto,
 }) => {
   return (
     <DropdownMenu.Root>
       <DropdownMenu.Trigger asChild>
-        <button className="text-sm font-semibold hover:bg-slate-100 transition py-2 px-3 border rounded-lg outline-none hover:cursor-pointer">
+        <button className="text-sm font-semibold hover:bg-slate-100 transition py-2 px-3 border rounded-lg outline-none hover:cursor-pointer ">
           {title}
         </button>
       </DropdownMenu.Trigger>
       <DropdownMenu.Portal>
-        <DropdownMenu.Content className="bg-white shadow-md border rounded-lg w-40">
+        <DropdownMenu.Content
+          align="end"
+          className="bg-white shadow-md border rounded-lg w-40 mt-1"
+        >
           <DropdownMenu.Item
             className="flex items-center gap-2 text-slate-300 hover:text-slate-600 hover:outline-none hover:cursor-pointer rounded-md py-2 px-3 hover:bg-slate-100 font-semibold text-left"
-            onClick={onClickEdit}
+            onClick={onClickView}
           >
-            <AiOutlineEdit size={20} />
-            <span>Edit</span>
+            <MdOutlinePreview size={20} />
+            <span>View</span>
           </DropdownMenu.Item>
           <DropdownMenu.Item
             className="flex items-center gap-2 text-slate-300 hover:text-slate-600 hover:outline-none hover:cursor-pointer rounded-md py-2 px-3 hover:bg-slate-100 font-semibold text-left"
-            onClick={onClickHapus}
+            onClick={onClickAuto}
           >
-            <AiOutlineDelete />
-            <span>Delete</span>
+            <MdAutorenew />
+            <span>Auto</span>
           </DropdownMenu.Item>
         </DropdownMenu.Content>
       </DropdownMenu.Portal>
@@ -46,4 +47,4 @@ const DropdownMenuAction: React.FC<DropdownProps> = ({
   );
 };
 
-export default DropdownMenuAction;
+export default DropdownCompare;

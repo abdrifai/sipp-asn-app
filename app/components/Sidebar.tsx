@@ -36,12 +36,7 @@ const Sidebar = () => {
             >
               Data
             </button>
-            <ul
-            // onClick={() => {
-            //   sidebarModal.onClose();
-            //   setOpenData(!openData);
-            // }}
-            >
+            <ul>
               <li>
                 <nav
                   className={`${
@@ -100,12 +95,7 @@ const Sidebar = () => {
             >
               Pelayanan
             </button>
-            <ul
-            // onClick={() => {
-            //   setOpenLayanan(!openLayanan);
-            //   sidebarModal.onClose();
-            // }}
-            >
+            <ul>
               <li>
                 <nav
                   className={`${
@@ -209,12 +199,7 @@ const Sidebar = () => {
             >
               Laporan
             </button>
-            <ul
-            // onClick={() => {
-            //   setOpenMLaporan(!openLayanan);
-            //   sidebarModal.onClose();
-            // }}
-            >
+            <ul>
               <li>
                 <nav
                   className={`${
@@ -359,7 +344,7 @@ const Sidebar = () => {
                     Organisasi
                   </Link>
                 </li>
-                <li className="group">
+                <li className="group" onClick={sidebarModal.onClose}>
                   <Link
                     href="/"
                     className="font-semibold py-2 px-4 w-full block text-slate-600 group-hover:text-red-700 group-hover:bg-slate-200 group-hover:rounded-md"
@@ -367,31 +352,47 @@ const Sidebar = () => {
                     Orang
                   </Link>
                 </li>
-                <li className="group">
+                <li className="group" onClick={sidebarModal.onClose}>
                   <Link
-                    href="/"
+                    href="/referensi/agama"
                     className="font-semibold py-2 px-4 w-full block text-slate-600 group-hover:text-red-700 group-hover:bg-slate-200 group-hover:rounded-md"
                   >
                     Agama
                   </Link>
                 </li>
-                <li className="group">
+                <li className="group" onClick={sidebarModal.onClose}>
                   <Link
-                    href="/"
+                    href="/referensi/golongan"
                     className="font-semibold py-2 px-4 w-full block text-slate-600 group-hover:text-red-700 group-hover:bg-slate-200 group-hover:rounded-md"
                   >
                     Golongan
                   </Link>
                 </li>
-                <li className="group">
+                <li className="group" onClick={sidebarModal.onClose}>
                   <Link
-                    href="/"
+                    href="/referensi/eselon"
                     className="font-semibold py-2 px-4 w-full block text-slate-600 group-hover:text-red-700 group-hover:bg-slate-200 group-hover:rounded-md"
                   >
-                    Jabatan ASN
+                    Eselon
                   </Link>
                 </li>
-                <li className="group">
+                <li className="group" onClick={sidebarModal.onClose}>
+                  <Link
+                    href="/referensi/jeniskp"
+                    className="font-semibold py-2 px-4 w-full block text-slate-600 group-hover:text-red-700 group-hover:bg-slate-200 group-hover:rounded-md"
+                  >
+                    Jenis KP
+                  </Link>
+                </li>
+                <li className="group" onClick={sidebarModal.onClose}>
+                  <Link
+                    href="/referensi/tktpend"
+                    className="font-semibold py-2 px-4 w-full block text-slate-600 group-hover:text-red-700 group-hover:bg-slate-200 group-hover:rounded-md"
+                  >
+                    Tkt Pendidikan
+                  </Link>
+                </li>
+                <li className="group" onClick={sidebarModal.onClose}>
                   <Link
                     href="/"
                     className="font-semibold py-2 px-4 w-full block text-slate-600 group-hover:text-red-700 group-hover:bg-slate-200 group-hover:rounded-md"
