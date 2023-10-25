@@ -12,6 +12,7 @@ interface PnsSearch {
   orang?: {
     nama?: string;
   };
+  pns_id_sapk?: string;
 }
 
 const ModalSearch: React.FC<PnsSearch> = () => {

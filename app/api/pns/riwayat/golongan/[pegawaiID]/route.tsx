@@ -7,15 +7,15 @@ export async function GET(
     params,
   }: {
     params: {
-      jenis: string;
+      // jenis: string;
       pegawaiID: string;
     };
   }
 ) {
-  const jenis = params.jenis;
+  // const jenis = params.jenis;
   const pegawaiID = params.pegawaiID;
 
-  const res = await fetch(`${URL_BACKEND}/api/riwayat/${jenis}/${pegawaiID}`, {
+  const res = await fetch(`${URL_BACKEND}/api/riwayat/golongan/${pegawaiID}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

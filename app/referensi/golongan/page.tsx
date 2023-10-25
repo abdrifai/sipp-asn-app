@@ -18,7 +18,7 @@ const defaultFormData = {
   pangkat: "",
 };
 
-const page = () => {
+const RefGolongan = () => {
   const [golongan, setgolongan] = useState([]);
   const [toggel, setToggel] = useState(false);
   const [golonganSelect, setGolonganSelect] = useState();
@@ -210,4 +210,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default RefGolongan;

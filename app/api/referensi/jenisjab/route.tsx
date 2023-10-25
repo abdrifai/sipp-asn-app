@@ -4,7 +4,7 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const nama = searchParams.get("query");
   if (nama !== "") {
-    const res = await fetch(`http://localhost:5000/api/referensi/jenis-kp`, {
+    const res = await fetch(`http://localhost:5000/api/referensi/jenisjab`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

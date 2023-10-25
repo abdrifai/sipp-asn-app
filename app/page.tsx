@@ -26,9 +26,9 @@ export default async function Home() {
         description="PNS Aktif Kab. Tojo Una-Una"
         bg_gradient="bg-gradient-to-r from-slate-300 via-slate-50 to-slate-300"
       />
-      <div className="mt-10">
+      {/* <div className="mt-10">
         <Uploadfile />
-      </div>
+      </div> */}
     </div>
   );
 }

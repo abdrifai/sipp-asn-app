@@ -1,6 +1,7 @@
 import Link from "next/link";
 
-const SyncPage = ({ children }: { children: React.ReactNode }) => {
+// const SyncPage = ({ children }: { children: React.ReactNode }) => {
+const SyncPage = () => {
   return (
     <div className="flex items-center w-full">
       <div className="flex items-center justify-center  w-full py-4">

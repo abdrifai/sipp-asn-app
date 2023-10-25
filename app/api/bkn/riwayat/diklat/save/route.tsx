@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(reqeust: Request) {
-  const data = await reqeust.json();
-  const { sso, apim } = data;
+  const req = await reqeust.json();
+  const { sso, apim, data } = req;
   // console.log("router diklat bkn");
   let headers = {
     "Content-Type": "application/json",
@@ -10,12 +10,15 @@ export async function POST(reqeust: Request) {
     Authorization: apim,
   };
 
+  // console.log("api frontend : ", data);
+
   try {
     const res = await fetch(
-      `https://apimws.bkn.go.id:8243/apisiasn/1.0/pns/rw-diklat/${data.nip}`,
+      `https://apimws.bkn.go.id:8243/apisiasn/1.0/diklat/save`,
       {
-        method: "GET",
+        method: "POST",
         headers: headers,
+        body: JSON.stringify(data),
       }
     );
     const result = await res.json();

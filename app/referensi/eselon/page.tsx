@@ -20,7 +20,7 @@ const defaultFormData = {
   jabatan_asn: "",
 };
 
-const page = () => {
+const RefEselon = () => {
   const [eselon, setEselon] = useState([]);
   const [toggel, setToggel] = useState(false);
   const [eselonSelect, setEselonSelect] = useState();
@@ -220,4 +220,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default RefEselon;

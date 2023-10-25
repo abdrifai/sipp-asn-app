@@ -52,7 +52,8 @@ const RiwayatDiklatBKN = () => {
 
       const data = await response.json();
 
-      console.info(data);
+      console.info("Data Riwayat :", data);
+
       if (data.code !== "900901") {
         setData(data.data);
         setError(false);
@@ -111,6 +112,7 @@ const RiwayatDiklatBKN = () => {
                   </td>
                 </tr>
               ) : (
+                data &&
                 data.map((item, index) => (
                   <tr
                     key={item.id}

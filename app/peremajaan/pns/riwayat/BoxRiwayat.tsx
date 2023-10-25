@@ -7,6 +7,7 @@ import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import ModalCompare from "@/app/components/modal/ModalCompare";
 import { FaPlusCircle, FaArrowAltCircleLeft } from "react-icons/fa";
+import DropdownMenuAdd from "@/app/components/dropdown/DropdownMenuAdd";
 // import { BsFillPlusCircleFill } from "react-icons/bs";
 
 interface BoxProps {
@@ -14,6 +15,7 @@ interface BoxProps {
   children: React.ReactNode;
   buttonAdd?: boolean;
   onToggel?: () => void;
+  onSync?: () => void;
 }
 
 const BoxRiwayat: React.FC<BoxProps> = ({
@@ -21,6 +23,7 @@ const BoxRiwayat: React.FC<BoxProps> = ({
   children,
   buttonAdd,
   onToggel,
+  onSync,
 }) => {
   const router = useRouter();
   const modalCompare = useModalCompare();
@@ -33,9 +36,14 @@ const BoxRiwayat: React.FC<BoxProps> = ({
       >
         {buttonAdd ? (
           <>
-            <div className="col-span-1 pl-2 hover:cursor-pointer text-slate-400 hover:text-green-500 ">
+            <DropdownMenuAdd
+              title="Action"
+              onToggel={onToggel}
+              onSync={onSync}
+            />
+            {/* <div className="col-span-1 pl-2 hover:cursor-pointer text-slate-400 hover:text-green-500 ">
               <FaPlusCircle size={24} onClick={onToggel} />
-            </div>
+            </div> */}
             <div className="col-span-10 flex items-center justify-center text-slate-500">
               {title}
             </div>

@@ -51,7 +51,7 @@ const InfoPanel = () => {
       currentPNS.NIP = nip;
       currentPNS.pegawaiId = pegawaiID || "";
     }
-  }, [currentPNS.NIP]);
+  }, [currentPNS]);
 
   const getDataPns = async (nip: string) => {
     try {

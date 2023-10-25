@@ -22,7 +22,7 @@ const defaultFormData = {
   group_tk_pend_nm: "",
 };
 
-const page = () => {
+const RefTktPendidikan = () => {
   const [tktPend, setTktPend] = useState([]);
   const [toggel, setToggel] = useState(false);
   const [tktPendSelect, setTktPendSelect] = useState();
@@ -227,4 +227,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default RefTktPendidikan;

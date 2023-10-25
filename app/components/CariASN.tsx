@@ -42,7 +42,7 @@ const CariASN = () => {
     console.log(data);
     localStorage.setItem("nip", nip);
     localStorage.setItem("id", id);
-    currentPegawai.nip = nip;
+    currentPegawai.NIP = nip;
     currentPegawai.pegawaiId = id;
     cariAsnModal.onClose();
     setSearch("");

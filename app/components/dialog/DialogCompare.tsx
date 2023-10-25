@@ -15,8 +15,9 @@ const DialogCompare = () => {
           <Dialog.Title className="text-mauve12 m-0 text-[17px] font-medium">
             Edit profile
           </Dialog.Title>
-          <Dialog.Description className="text-mauve11 mt-[10px] mb-5 text-[15px] leading-normal">
-            Make changes to your profile here. Click save when you're done.
+          {/* <Dialog.Description className="text-mauve1 mt-[10px] mb-5 text-[15px] leading-normal"> */}
+          <Dialog.Description className="mt-[10px] mb-5 text-[15px] leading-normal">
+            Make changes to your profile here. Click save when you are done.
           </Dialog.Description>
           <div className="mt-[25px] flex justify-end">
             <Dialog.Close asChild>

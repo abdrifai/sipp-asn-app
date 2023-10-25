@@ -90,7 +90,7 @@ const FormInput: React.FC<FormRencanaProps> = ({
             type="text"
             name="id_bkn"
             className="w-1/4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            value={formData?.id_bkn}
+            value={formData?.id_bkn || ""}
             onChange={handleChange}
           />
         </div>
@@ -106,7 +106,7 @@ const FormInput: React.FC<FormRencanaProps> = ({
             id="jabatan_asn"
             name="jabatan_asn"
             className="w-1/4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            value={formData?.jabatan_asn}
+            value={formData?.jabatan_asn || ""}
             onChange={handleChange}
           />
         </div>

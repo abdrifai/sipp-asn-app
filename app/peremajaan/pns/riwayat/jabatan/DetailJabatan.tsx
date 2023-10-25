@@ -5,72 +5,68 @@ import "react-datepicker/dist/react-datepicker.css";
 
 interface DetailProps {
   handleToggle: () => void;
-  onDataReceived?: (data: RwtGolDetail) => void;
+  onDataReceived?: (data: RwtJabDetail) => void;
   rwtID?: string;
   sendData?: any;
 }
 
-interface RwtGolDetail {
+interface RwtJabDetail {
   id: string;
-  maskerBln: string;
-  maskerThn: string;
-  pengesahan: string;
-  pertekBkn: string;
-  tglPertek: string;
   sk: string;
-  tglSk: string;
   tmtSk: string;
-  gapok: number;
-  golongan: {
+  pengesahan: string;
+  jnsJabId: string;
+  jabatan: {
     id: string;
-    gol: string;
-    pangkat: string;
+    nmJab: string;
   };
-  jenisKP: {
+  unorInduk: {
     id: string;
-    jnskp: string;
+    nmUnor: string;
+  };
+  subUnorSub: {
+    id: string;
+    nmUnor: string;
   };
 }
 
 const defaultFormData = {
   id: "",
-  maskerBln: "",
-  maskerThn: "",
-  pengesahan: "",
-  pertekBkn: "",
-  tglPertek: "",
   sk: "",
-  tglSk: "",
   tmtSk: "",
-  gapok: 0,
-  golongan: {
+  pengesahan: "",
+  jnsJabId: "",
+  jabatan: {
     id: "",
-    gol: "",
-    pangkat: "",
+    nmJab: "",
   },
-  jenisKP: {
+  unorInduk: {
     id: "",
-    jnskp: "",
+    nmUnor: "",
+  },
+  subUnorSub: {
+    id: "",
+    nmUnor: "",
   },
 };
 
-const DetailGolongan: React.FC<DetailProps> = ({
+const DetailJabatan: React.FC<DetailProps> = ({
   handleToggle,
   onDataReceived,
   sendData,
   rwtID,
 }) => {
-  const [refJenisKP, setRefJenisKP] = useState([]);
-  const [refGolongan, setRefGolongan] = useState([]);
-  const [formData, setFormData] = useState<RwtGolDetail>(defaultFormData);
+  const [refJenisJab, setRefJenisJab] = useState([]);
+  const [refJab, setRefJab] = useState([]);
+  const [formData, setFormData] = useState<RwtJabDetail>(defaultFormData);
 
-  const getRefJenisKP = async () => {
+  const getRefJenisJabatan = async () => {
     try {
-      const res = await fetch(`/api/referensi/jeniskp`);
+      const res = await fetch(`/api/referensi/jenisjab`);
 
       if (res.ok) {
         const data = await res.json();
-        setRefJenisKP(data.data);
+        setRefJenisJab(data.data);
         // console.log(data.data[0].id);
       }
     } catch (error) {
@@ -78,23 +74,23 @@ const DetailGolongan: React.FC<DetailProps> = ({
     }
   };
 
-  const getRefGolongan = async () => {
-    try {
-      const res = await fetch(`/api/referensi/golongan`);
+  // const getRefGolongan = async () => {
+  //   try {
+  //     const res = await fetch(`/api/referensi/golongan`);
 
-      if (res.ok) {
-        const data = await res.json();
-        setRefGolongan(data.data);
-        // console.log(data.data);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  //     if (res.ok) {
+  //       const data = await res.json();
+  //       setRefGolongan(data.data);
+  //       // console.log(data.data);
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
 
   useEffect(() => {
-    getRefJenisKP();
-    getRefGolongan();
+    getRefJenisJabatan();
+    // getRefGolongan();
     setFormData(sendData);
     // console.log(sendData);
   }, [sendData]);
@@ -105,31 +101,10 @@ const DetailGolongan: React.FC<DetailProps> = ({
     const { name, value } = e.target;
 
     setFormData((prevData) => {
-      if (name.includes(".")) {
-        const [nestedProp, nestedField] = name.split(".");
-        if (prevData["golongan"]) {
-          return {
-            ...prevData,
-            [nestedProp]: {
-              ...prevData["golongan"],
-              [nestedField]: value,
-            },
-          };
-        } else {
-          return {
-            ...prevData,
-            [nestedProp]: {
-              ...prevData["jenisKP"],
-              [nestedField]: value,
-            },
-          };
-        }
-      } else {
-        return {
-          ...prevData,
-          [name]: value,
-        };
-      }
+      return {
+        ...prevData,
+        [name]: value,
+      };
     });
   };
 
@@ -142,7 +117,7 @@ const DetailGolongan: React.FC<DetailProps> = ({
 
   return (
     <CardBox
-      title="Rincian Golongan"
+      title="Rincian Jabatan"
       onClose={handleToggle}
       footer={true}
       onSave={onSave}
@@ -153,19 +128,19 @@ const DetailGolongan: React.FC<DetailProps> = ({
             htmlFor="jenisKP.id"
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
           >
-            Jenis KP
+            Jenis Jabatan
           </label>
           <select
-            value={formData?.jenisKP.id}
+            value={formData?.jnsJabId}
             onChange={handleChange}
             name="jenisKP.id"
             className="w-1/3 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           >
-            <option value="">Pilih jenis KP</option>
-            {refJenisKP &&
-              refJenisKP?.map((item: any) => (
+            <option value="">Pilih Jenis Jabatan</option>
+            {refJenisJab &&
+              refJenisJab?.map((item: any) => (
                 <option key={item.id} value={item.id}>
-                  {item.jnskp}
+                  {item.jnsjab}
                 </option>
               ))}
           </select>
@@ -177,7 +152,7 @@ const DetailGolongan: React.FC<DetailProps> = ({
           >
             Golongan Ruang
           </label>
-          <select
+          {/* <select
             value={formData?.golongan.id}
             onChange={handleChange}
             name="golongan.id"
@@ -190,7 +165,7 @@ const DetailGolongan: React.FC<DetailProps> = ({
                   {item.gol} , {item.pangkat}
                 </option>
               ))}
-          </select>
+          </select> */}
         </div>
         <div className="col-span-2">
           <label
@@ -199,13 +174,13 @@ const DetailGolongan: React.FC<DetailProps> = ({
           >
             Masa Kerja Tahun
           </label>
-          <input
+          {/* <input
             value={formData?.maskerThn}
             onChange={handleChange}
             type="text"
             name="maskerThn"
             className="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          />
+          /> */}
         </div>
         <div className="col-span-6">
           <label
@@ -215,7 +190,7 @@ const DetailGolongan: React.FC<DetailProps> = ({
             Masa Kerja Bulan
           </label>
           <input
-            value={formData?.maskerBln}
+            // value={formData?.maskerBln}
             onChange={handleChange}
             type="text"
             name="maskerBln"
@@ -246,7 +221,7 @@ const DetailGolongan: React.FC<DetailProps> = ({
           </label>
           <DatePicker
             name="tglSk"
-            selected={formData?.tglSk ? new Date(formData?.tglSk) : null}
+            // selected={formData?.tglSk ? new Date(formData?.tglSk) : null}
             onChange={(date) =>
               setFormData((prevData) => ({
                 ...prevData,
@@ -287,7 +262,7 @@ const DetailGolongan: React.FC<DetailProps> = ({
             Nomor Pertek BKN
           </label>
           <input
-            value={formData?.pertekBkn}
+            // value={formData?.pertekBkn}
             onChange={handleChange}
             type="text"
             name="pertekBkn"
@@ -301,7 +276,7 @@ const DetailGolongan: React.FC<DetailProps> = ({
           >
             Tanggal Pertek BKN
           </label>
-          <DatePicker
+          {/* <DatePicker
             name="tglPertek"
             selected={
               formData?.tglPertek ? new Date(formData?.tglPertek) : null
@@ -315,7 +290,7 @@ const DetailGolongan: React.FC<DetailProps> = ({
             dateFormat={"dd/MM/yyyy"}
             className="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             autoComplete="off"
-          />
+          /> */}
         </div>
         <div className="col-span-4">
           <label
@@ -325,7 +300,7 @@ const DetailGolongan: React.FC<DetailProps> = ({
             Gaji Pokok
           </label>
           <input
-            value={(formData?.gapok || 0).toLocaleString()}
+            // value={(formData?.gapok || 0).toLocaleString()}
             onChange={handleChange}
             type="text"
             name="gapok"
@@ -352,4 +327,4 @@ const DetailGolongan: React.FC<DetailProps> = ({
   );
 };
 
-export default DetailGolongan;
+export default DetailJabatan;

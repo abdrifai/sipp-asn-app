@@ -15,7 +15,7 @@ type PegawaiOfBKN = {
   authorization: string;
 };
 
-export default function page() {
+export default function Setting() {
   const [tokenSSO, setTokenSSO] = useState("");
   const [tokenAPIM, setTokenAPIM] = useState("");
   const [data, setData] = useState<PegawaiOfBKN | null>(null);

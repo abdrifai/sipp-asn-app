@@ -52,7 +52,7 @@ const defaultFormData = {
   },
 };
 
-interface DeleteRwtGol {
+interface DeleteRwt {
   id: string;
   gol: string;
   sk: string;
@@ -61,7 +61,7 @@ interface DeleteRwtGol {
 const RiwayatGolongan = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [dataDeleteConfirmation, setDataDeleteConfirmation] =
-    useState<DeleteRwtGol>({ gol: "", id: "", sk: "" });
+    useState<DeleteRwt>({ gol: "", id: "", sk: "" });
   const currentPNS = useCurrentPNS();
   const [toggelDetail, setToggelDetail] = useState(false);
   const [rwtGolongan, setRwtGolongan] = useState([]);
@@ -69,9 +69,9 @@ const RiwayatGolongan = () => {
   const [formData, setFormData] = useState<DataRwtGolongan>(defaultFormData);
   const [rwtIDSelect, setRwtIDSelect] = useState("");
 
-  const getDataRiwayat = async (jenis: string, pegawaiID: string) => {
+  const getDataRiwayat = async (pegawaiID: string) => {
     try {
-      const response = await fetch(`/api/pns/riwayat/${jenis}/${pegawaiID}`);
+      const response = await fetch(`/api/pns/riwayat/golongan/${pegawaiID}`);
 
       if (response.ok) {
         const data = await response.json();
@@ -83,7 +83,7 @@ const RiwayatGolongan = () => {
     }
   };
   useEffect(() => {
-    getDataRiwayat("golongan", currentPNS.pegawaiId);
+    getDataRiwayat(currentPNS.pegawaiId);
   }, [currentPNS.pegawaiId]);
 
   const handleToggelDetail = () => {
@@ -125,7 +125,7 @@ const RiwayatGolongan = () => {
         type: "success",
       });
       setIsOpen(false);
-      getDataRiwayat("golongan", currentPNS.pegawaiId);
+      getDataRiwayat(currentPNS.pegawaiId);
     } else {
       console.log("message :", await data.json());
     }
@@ -156,7 +156,7 @@ const RiwayatGolongan = () => {
             autoClose: 2000,
             type: "success",
           });
-          getDataRiwayat("golongan", currentPNS.pegawaiId);
+          getDataRiwayat(currentPNS.pegawaiId);
           setToggelDetail((prev) => !prev);
         } else {
           // Jika terjadi kesalahan dalam menyimpan data, tangani di sini
@@ -191,7 +191,7 @@ const RiwayatGolongan = () => {
             autoClose: 2000,
             type: "success",
           });
-          getDataRiwayat("golongan", currentPNS.pegawaiId);
+          getDataRiwayat(currentPNS.pegawaiId);
           setToggelDetail((prev) => !prev);
         } else {
           // Jika terjadi kesalahan dalam menyimpan data, tangani di sini
@@ -221,6 +221,7 @@ const RiwayatGolongan = () => {
         title="Delete Confirmation"
         content={`Apakah anda yakin akan mengapus data riwayat golongan ${dataDeleteConfirmation.gol}?`}
       />
+
       {toggelDetail && (
         <DetailGolongan
           handleToggle={handleToggelDetail}
@@ -228,6 +229,7 @@ const RiwayatGolongan = () => {
           sendData={rwtGolonganSelect}
         />
       )}
+
       <DetailData
         title="Riwayat Golongan"
         buttonAdd={true}

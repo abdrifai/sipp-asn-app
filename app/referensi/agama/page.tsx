@@ -16,7 +16,7 @@ const defaultFormData = {
   agama: "",
 };
 
-const page = () => {
+const RefAgama = () => {
   const [agama, setAgama] = useState([]);
   const [toggel, setToggel] = useState(false);
   const [agamaSelect, setAgamaSelect] = useState();
@@ -204,4 +204,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default RefAgama;

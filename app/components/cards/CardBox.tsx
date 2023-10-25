@@ -40,29 +40,27 @@ const CardBox: React.FC<CardBoxProps> = ({
     } else {
       const formData = new FormData();
       formData.append("arsip", saveImage);
-
       const result = await fetch("http://localhost:5000/api/upload", {
         method: "POST",
         body: formData,
       });
-
       if (result.ok) {
         console.log("arsip di simpan");
       }
+    }
 
-      if (onSave) {
-        onSave(); // Panggil fungsi onSave yang diberikan
-      }
+    if (onSave) {
+      onSave(); // Panggil fungsi onSave yang diberikan
     }
   };
 
-  const uploadArsip = () => {
-    if (!saveImage) {
-      alert("arsip belum di upload !!");
-    } else {
-      return onSave;
-    }
-  };
+  // const uploadArsip = () => {
+  //   if (!saveImage) {
+  //     alert("arsip belum di upload !!");
+  //   } else {
+  //     return onSave;
+  //   }
+  // };
 
   return (
     <div

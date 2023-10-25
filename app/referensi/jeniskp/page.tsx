@@ -20,7 +20,7 @@ const defaultFormData = {
   nama: "",
 };
 
-const page = () => {
+const RefJnsSKP = () => {
   const [jenisKp, setJenisKp] = useState([]);
   const [toggel, setToggel] = useState(false);
   const [jenisKpSelect, setjenisKpSelect] = useState();
@@ -215,4 +215,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default RefJnsSKP;
